@@ -1,0 +1,50 @@
+<div class="min-h-screen bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6 text-center">Planos - Pulse API Monitor</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Plano Pulse Starter -->
+            <div
+                class="bg-white p-6 rounded-lg shadow-md border-2 border-transparent hover:border-indigo-500 transition">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Pulse Starter</h2>
+                <p class="text-gray-600 mb-4">Plano gratuito para iniciantes.</p>
+                <p class="text-3xl font-bold text-indigo-600 mb-4">Grátis</p>
+                <ul class="text-gray-600 mb-6 space-y-2">
+                    <li class="flex items-center"><span class="text-green-500 mr-2">✔</span> Até 3 endpoints</li>
+                    <li class="flex items-center"><span class="text-green-500 mr-2">✔</span> Intervalos de 5 ou 10
+                        minutos</li>
+                    <li class="flex items-center"><span class="text-green-500 mr-2">✔</span> Notificações via Telegram
+                    </li>
+                    <li class="flex items-center"><span class="text-red-500 mr-2">✘</span> Endpoints ilimitados</li>
+                    <li class="flex items-center"><span class="text-red-500 mr-2">✘</span> Intervalos flexíveis</li>
+                    <li class="flex items-center"><span class="text-red-500 mr-2">✘</span> Biblioteca pulseapilib</li>
+                </ul>
+                <button [disabled]="true" class="w-full bg-gray-400 text-white py-2 px-4 rounded-md cursor-not-allowed"
+                    title="Já está no plano gratuito">
+                    Plano Atual
+                </button>
+            </div>
+
+            <!-- Plano Pulse Pro -->
+            <div
+                class="bg-white p-6 rounded-lg shadow-md border-2 border-transparent hover:border-indigo-500 transition">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Pulse Pro</h2>
+                <p class="text-gray-600 mb-4">Plano premium para profissionais.</p>
+                <p class="text-3xl font-bold text-indigo-600 mb-4">$9,99/mês</p>
+                <ul class="text-gray-600 mb-6 space-y-2">
+                    <li class="flex items-center"><span class="text-green-500 mr-2">✔</span> Endpoints ilimitados</li>
+                    <li class="flex items-center"><span class="text-green-500 mr-2">✔</span> Intervalos flexíveis (1, 5,
+                        10 min)</li>
+                    <li class="flex items-center"><span class="text-green-500 mr-2">✔</span> Notificações via Telegram
+                    </li>
+                    <li class="flex items-center"><span class="text-green-500 mr-2">✔</span> Biblioteca pulseapilib
+                        (Java, Node.js, Python)</li>
+                </ul>
+                <button (click)="upgradeToPro()"
+                    class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Fazer Upgrade
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
