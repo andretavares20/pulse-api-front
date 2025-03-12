@@ -1,81 +1,90 @@
 <div class="min-h-screen bg-gray-100 p-6">
-    <div class="max-w-4xl mx-auto">
-      <h1 class="text-3xl font-bold mb-6 text-center">Dashboard - Pulse API Monitor</h1>
-  
-      <div
-        *ngIf="planService.isEndpointLimitReached(endpoints.length)"
-        class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6"
-      >
-        <p class="font-medium">Limite atingido!</p>
-        <p>
-          Você atingiu o limite de {{ currentPlan.endpointLimit }} endpoints no plano {{ currentPlan.name }}. Faça
-          upgrade para o
-          <a routerLink="/plans" class="text-indigo-600 hover:underline">Pulse Pro</a> para adicionar mais.
-        </p>
-      </div>
-  
-      <!-- Formulário para Adicionar Endpoint -->
-      <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-        <h2 class="text-xl font-semibold mb-4">Adicionar Novo Endpoint</h2>
-        <form (ngSubmit)="onSubmitForm()" #endpointForm="ngForm">
-          <div class="mb-4">
-            <label for="endpointName" class="block text-sm font-medium text-gray-700">Nome</label>
-            <input
-              id="endpointName"
-              name="endpointName"
-              [(ngModel)]="newEndpoint.name"
-              required
-              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-              placeholder="Ex.: API Home"
-            />
-          </div>
-          <div class="mb-4">
-            <label for="endpointUrl" class="block text-sm font-medium text-gray-700">URL</label>
-            <input
-              id="endpointUrl"
-              name="endpointUrl"
-              [(ngModel)]="newEndpoint.url"
-              required
-              pattern="https?://.+"
-              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-              placeholder="Ex.: https://api.example.com"
-            />
-            <div
-              *ngIf="endpointForm.controls['endpointUrl']?.errors?.['pattern']"
-              class="text-red-500 text-sm mt-1"
-            >
-              URL inválida. Use um formato válido (ex.: http:// ou https://).
-            </div>
-          </div>
-          <button
-            type="submit"
-            [disabled]="!endpointForm.valid || planService.isEndpointLimitReached(endpoints.length)"
-            class="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Adicionar Endpoint
-          </button>
-        </form>
-      </div>
-  
-      <!-- Lista de Endpoints -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div *ngFor="let endpoint of endpoints" class="bg-white p-4 rounded-lg shadow-md">
-          <h2 class="text-lg font-semibold">{{ endpoint.name }}</h2>
-          <p class="text-sm text-gray-600">URL: {{ endpoint.url }}</p>
-          <p class="text-sm text-gray-600">Status:
-            <span
-              [ngClass]="endpoint.status === 'Online' ? 'text-green-600' : 'text-red-600'"
-            >
-              {{ endpoint.status }}
-            </span>
-          </p>
-          <button
-            (click)="removeEndpoint(endpoint)"
-            class="mt-2 text-red-600 hover:text-red-800 text-sm"
-          >
-            Remover
-          </button>
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-center">Dashboard - Pulse API Monitor</h1>
+
+    <div *ngIf="planService.isEndpointLimitReached(endpoints.length)"
+      class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6">
+      <p class="font-medium">Limite atingido!</p>
+      <p>
+        Você atingiu o limite de {{ currentPlan.endpointLimit }} endpoints no plano {{ currentPlan.name }}. Faça
+        upgrade para o
+        <a routerLink="/plans" class="text-indigo-600 hover:underline">Pulse Pro</a> para adicionar mais.
+      </p>
+    </div>
+
+    <!-- Formulário para Adicionar Endpoint -->
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+      <h2 class="text-xl font-semibold mb-4">Adicionar Novo Endpoint</h2>
+      <form (ngSubmit)="onSubmitForm()" #endpointForm="ngForm">
+        <div class="mb-4">
+          <label for="endpointName" class="block text-sm font-medium text-gray-700">Nome</label>
+          <input id="endpointName" name="endpointName" [(ngModel)]="newEndpoint.name" required
+            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+            placeholder="Ex.: API Home" />
         </div>
+        <div class="mb-4">
+          <label for="endpointUrl" class="block text-sm font-medium text-gray-700">URL</label>
+          <input id="endpointUrl" name="endpointUrl" [(ngModel)]="newEndpoint.url" required pattern="https?://.+"
+            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+            placeholder="Ex.: https://api.example.com" />
+          <div *ngIf="endpointForm.controls['endpointUrl']?.errors?.['pattern']" class="text-red-500 text-sm mt-1">
+            URL inválida. Use um formato válido (ex.: http:// ou https://).
+          </div>
+        </div>
+        <div class="mb-4">
+          <label for="scheduleInterval" class="block text-sm font-medium text-gray-700">Intervalo de Agendamento</label>
+          <select id="scheduleInterval" name="scheduleInterval" [(ngModel)]="newEndpoint.scheduleInterval" required
+            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+            <option *ngFor="let interval of scheduleIntervals" [value]="interval">
+              {{ interval }}
+            </option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label for="notificationChannel" class="block text-sm font-medium text-gray-700">Canal de Notificação</label>
+          <select id="notificationChannel" name="notificationChannel" [(ngModel)]="newEndpoint.notificationChannel"
+            required
+            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+            <option *ngFor="let channel of notificationChannels" [value]="channel">
+              {{ channel }}
+            </option>
+          </select>
+        </div>
+        <!-- Campo chatId condicional -->
+        <div *ngIf="newEndpoint.notificationChannel === 'telegram'" class="mb-4">
+          <label for="chatId" class="block text-sm font-medium text-gray-700">Chat ID (Telegram)</label>
+          <input id="chatId" name="chatId" [(ngModel)]="chatId" required
+            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+            placeholder="Ex.: -123456789" />
+          <div *ngIf="newEndpoint.notificationChannel === 'telegram' && !chatId" class="text-red-500 text-sm mt-1">
+            O Chat ID é obrigatório para o canal Telegram.
+          </div>
+        </div>
+        <button type="submit"
+          [disabled]="!endpointForm.valid || planService.isEndpointLimitReached(endpoints.length) || (newEndpoint.notificationChannel === 'telegram' && !chatId)"
+          class="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          Adicionar Endpoint
+        </button>
+      </form>
+    </div>
+
+    <!-- Lista de Endpoints -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div *ngFor="let endpoint of endpoints" class="bg-white p-4 rounded-lg shadow-md">
+        <h2 class="text-lg font-semibold">{{ endpoint.name }}</h2>
+        <p class="text-sm text-gray-600">URL: {{ endpoint.url }}</p>
+        <p class="text-sm text-gray-600">Status:
+          <span [ngClass]="endpoint.status === 'Online' ? 'text-green-600' : 'text-red-600'">
+            {{ endpoint.status }}
+          </span>
+        </p>
+        <p class="text-sm text-gray-600">Intervalo: {{ endpoint.scheduleInterval }}</p>
+        <p class="text-sm text-gray-600">Notificação: {{ endpoint.notificationChannel }}</p>
+        <button (click)="removeEndpoint(endpoint)" class="mt-2 text-red-600 hover:text-red-800 text-sm">
+          Remover
+        </button>
       </div>
     </div>
+    <div *ngIf="errorMessage" class="text-red-500 mt-4">{{ errorMessage }}</div>
   </div>
+</div>
